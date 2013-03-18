@@ -1,0 +1,70 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Temp chart</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">    	
+
+		<!-- jquery -->		
+		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+
+		<!-- twitter bootstrap-->
+		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+	</head> 
+	<body>
+	    <div class="container">			
+			<div class="row">			
+				<div id="containingDiv" class="span12" style="height:100%;">					
+					<canvas id="myCanvas"></canvas>				
+				</div>
+			</div>			
+		</div>
+		
+		
+    <!-- Insert fallback content here -->
+    	<script type="text/javascript" src="../WeatherChart.js"></script>
+
+		<script>
+		var data = {"cellset":[[{"value":"LogDateOnly","type":"ROW_HEADER_HEADER","properties":{"hierarchy":"[LogDateOnly]","dimension":"LogDateOnly","level":"[LogDateOnly].[LogDateOnly]"}},{"value":"TempMin","type":"COLUMN_HEADER","properties":{"uniquename":"[Measures].[TempMin]","hierarchy":"Measures","dimension":"Measures","level":"[Measures].[MeasuresLevel]"}},{"value":"TempMax","type":"COLUMN_HEADER","properties":{"uniquename":"[Measures].[TempMax]","hierarchy":"Measures","dimension":"Measures","level":"[Measures].[MeasuresLevel]"}}],[{"value":"2013-03-04","type":"ROW_HEADER","properties":{"uniquename":"[LogDateOnly].[2013-03-04]","hierarchy":"LogDateOnly","dimension":"LogDateOnly","level":"[LogDateOnly].[LogDateOnly]"}},{"value":"40","type":"DATA_CELL","properties":{"position":"0:22","raw":"40.268699645996094"}},{"value":"50","type":"DATA_CELL","properties":{"position":"1:22","raw":"49.55630111694336"}}],[{"value":"2013-03-05","type":"ROW_HEADER","properties":{"uniquename":"[LogDateOnly].[2013-03-05]","hierarchy":"LogDateOnly","dimension":"LogDateOnly","level":"[LogDateOnly].[LogDateOnly]"}},{"value":"37","type":"DATA_CELL","properties":{"position":"0:23","raw":"36.5625"}},{"value":"40","type":"DATA_CELL","properties":{"position":"1:23","raw":"40.46879959106445"}}],[{"value":"2013-03-07","type":"ROW_HEADER","properties":{"uniquename":"[LogDateOnly].[2013-03-07]","hierarchy":"LogDateOnly","dimension":"LogDateOnly","level":"[LogDateOnly].[LogDateOnly]"}},{"value":"46","type":"DATA_CELL","properties":{"position":"0:24","raw":"45.65620040893555"}},{"value":"47","type":"DATA_CELL","properties":{"position":"1:24","raw":"46.956199645996094"}}],[{"value":"2013-03-08","type":"ROW_HEADER","properties":{"uniquename":"[LogDateOnly].[2013-03-08]","hierarchy":"LogDateOnly","dimension":"LogDateOnly","level":"[LogDateOnly].[LogDateOnly]"}},{"value":"44","type":"DATA_CELL","properties":{"position":"0:25","raw":"43.650001525878906"}},{"value":"47","type":"DATA_CELL","properties":{"position":"1:25","raw":"47.26250076293945"}}],[{"value":"2013-03-09","type":"ROW_HEADER","properties":{"uniquename":"[LogDateOnly].[2013-03-09]","hierarchy":"LogDateOnly","dimension":"LogDateOnly","level":"[LogDateOnly].[LogDateOnly]"}},{"value":"42","type":"DATA_CELL","properties":{"position":"0:26","raw":"42.456199645996094"}},{"value":"47","type":"DATA_CELL","properties":{"position":"1:26","raw":"46.65620040893555"}}],[{"value":"2013-03-10","type":"ROW_HEADER","properties":{"uniquename":"[LogDateOnly].[2013-03-10]","hierarchy":"LogDateOnly","dimension":"LogDateOnly","level":"[LogDateOnly].[LogDateOnly]"}},{"value":"43","type":"DATA_CELL","properties":{"position":"0:27","raw":"43.06869888305664"}},{"value":"49","type":"DATA_CELL","properties":{"position":"1:27","raw":"48.768699645996094"}}],[{"value":"2013-03-11","type":"ROW_HEADER","properties":{"uniquename":"[LogDateOnly].[2013-03-11]","hierarchy":"LogDateOnly","dimension":"LogDateOnly","level":"[LogDateOnly].[LogDateOnly]"}},{"value":"45","type":"DATA_CELL","properties":{"position":"0:28","raw":"108.28099822998047"}},{"value":"55","type":"DATA_CELL","properties":{"position":"1:28","raw":"108.28099822998047"}}]],"runtime":18,"error":null,"height":30,"width":3};
+
+		function extractData(rawData){
+			var data = [];
+			var minMin = null;
+			var maxMax = null;
+			for(var i=1;i<rawData['cellset'].length;i++){
+				var date = rawData['cellset'][i][0].value;
+				//parsing the date
+				date = date.substring(5,10);
+				date = date.replace("-","/");
+				var min = parseInt(rawData['cellset'][i][1].value,10);
+				var max = parseInt(rawData['cellset'][i][2].value,10);
+				if(minMin==null||min<minMin){
+					minMin = min;
+				}
+				if(maxMax==null||maxMax<max){
+					maxMax = max;
+				}
+				data.push([date,min,max]);
+			}
+
+			return {
+				minMin:minMin,
+				maxMax:maxMax,
+				data:data
+			};
+		}
+
+		$(document).ready(function() {
+			var extracted_data = extractData(data);	
+			weatherChart({
+				canvas_id:"myCanvas",
+				data:extracted_data,
+				redraw:true});
+			});
+		</script>
+
+
+	</body>
+</html>
+

@@ -27,6 +27,23 @@ function roundRect(ctx,x, y, width, height, radius, fill, stroke) {
     }
 };
 
+function getMinAndMax(data){
+	var minMin=null;
+	var maxMax=null;
+	for(var i=0;i<data.length;i++){
+		var min = data[i][1];
+		var max = data[i][2];
+		if(minMin==null||min<minMin){
+			minMin = min;
+		}
+		if(maxMax==null||maxMax<max){
+			maxMax = max;
+		}
+	}
+
+	return [minMin,maxMax];
+}
+
 function weatherChart(options){
 	if(!options.data){alert("No data");}else{
 		var canvas_width = options.canvas_width;
@@ -52,21 +69,22 @@ function weatherChart(options){
 		var maxTempColumnWidth = Math.floor((options.proportions[2]/100)*canvas_width);
 
 		//HEIGHT : with a week data, a bar height is 1/7 of the canvas
-		var barRowHeight = Math.floor(canvas_height/options.data['data'].length);
+		var barRowHeight = Math.floor(canvas_height/options.data.length);
 
 		//the smallest value will take one quarter of the barChartColumnWidth
 		var minMinWidth = barChartColumnWidth/4;	
 		// the biggest value will take all of barChartColumnWidth 
 		var maxMaxWidth = barChartColumnWidth;
 
-		var minMin = options.data['minMin'];
-		var maxMax = options.data['maxMax'];
+		var minAndMax = getMinAndMax(options.data);
+		var minMin = minAndMax[0];
+		var maxMax = minAndMax[1];
 
 		//this is the coeefficient needed to calculate each width
 		var one_degree_width = (maxMaxWidth - minMinWidth)/(maxMax - minMin);
 
-		for(var i=0;i<options.data['data'].length;i++){
-			row_data = options.data['data'][i];
+		for(var i=0;i<options.data.length;i++){
+			row_data = options.data[i];
 			
 			//calculating several values
 			var xOffset = 0;

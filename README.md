@@ -29,16 +29,15 @@ NOTE : this lib needs jQuery to run.
 
 Here are the available options :
 
-canvas_id : the id of the canvas to draw
-data : matrix containing dates and values
-canvas_width (optional) : fixed canvas width
-canvas_height (optional) : fixed canvas height
-colors (optional) : array containing the colors for the bar charts
-font (optional) : the font to use for the values
-proportions (optional) : array containing the width percentage of each column in the chart (date, bar chart, second value if available)
-unit (optional) : "˚","%" or whatever you want to use 
-redraw (optional) : true if you want to redraw the canvas when the window size changes
-
+    canvas_id : the id of the canvas to draw
+    data : matrix containing dates and values
+    canvas_width (optional) : fixed canvas width
+    canvas_height (optional) : fixed canvas height
+    colors (optional) : array containing the colors for the bar charts
+    font (optional) : the font to use for the values
+    proportions (optional) : array containing the width percentage of each column in the chart (date, bar chart, second value if available)
+    unit (optional) : "˚","%" or whatever you want to use
+    redraw (optional) : true if you want to redraw the canvas when the window size changes
 
 ## License
 Copyright (c) 2013 Fabien Allanic

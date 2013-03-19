@@ -87,9 +87,6 @@ function weatherChart(options){
 			//WIDTH : by default a bar is 20% a date, 65% a barchart (with min value inside), 15% a max value (20/80 if no max value)
 			var dateColumnWidth = Math.floor((options.proportions[0]/100)*canvas_width);
 			var barChartColumnWidth = Math.floor((options.proportions[1]/100)*canvas_width);
-			/*if(dimensions == 2){
-				var maxValueColumnWidth = Math.floor((options.proportions[2]/100)*canvas_width);
-			}*/
 
 			//HEIGHT : with a week data, a bar height is 1/7 of the canvas
 			var barRowHeight = Math.floor(canvas_height/options.data.length);
@@ -102,6 +99,11 @@ function weatherChart(options){
 			var minAndMax = getMinAndMax(options.data);
 			var minMin = minAndMax[0];
 			var maxMax = minAndMax[1];
+
+			//if we display percent, we need to make the bar proportionnal the absolute max value
+			if(options.unit == "%"){
+				maxMax = 100;
+			}
 
 			//this is the coeefficient needed to calculate each width
 			var one_degree_width = (maxMaxWidth - minMinWidth)/(maxMax - minMin);
